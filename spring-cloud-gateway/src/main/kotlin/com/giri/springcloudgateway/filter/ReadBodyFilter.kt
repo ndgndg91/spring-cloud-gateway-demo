@@ -5,6 +5,8 @@ import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils.CACHED_REQUEST_BODY_ATTR
 import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 
@@ -27,16 +29,18 @@ class ReadBodyFilter: GatewayFilterFactory<ReadBodyFilter.Config> {
 
     override fun apply(config: Config?): GatewayFilter {
         return GatewayFilter { exchange, chain ->
-            val cachedBody = StringBuilder()
-            val cachedBodyAttribute = exchange.getAttribute<Any>(CACHED_REQUEST_BODY_ATTR)
-            if (cachedBodyAttribute !is DataBuffer) {
-                log.info("not cached")
-                // caching gone wrong error handling
+            if (exchange.request.method != HttpMethod.GET) {
+                val cachedBody = StringBuilder()
+                val cachedBodyAttribute = exchange.getAttribute<Any>(CACHED_REQUEST_BODY_ATTR)
+                if (cachedBodyAttribute !is DataBuffer) {
+                    log.info("not cached")
+                    // caching gone wrong error handling
+                }
+                val dataBuffer: DataBuffer = cachedBodyAttribute as DataBuffer
+                cachedBody.append(StandardCharsets.UTF_8.decode(dataBuffer.asByteBuffer()).toString())
+                val bodyAsJson = cachedBody.toString()
+                log.info("{}", bodyAsJson)
             }
-            val dataBuffer: DataBuffer = cachedBodyAttribute as DataBuffer
-            cachedBody.append(StandardCharsets.UTF_8.decode(dataBuffer.asByteBuffer()).toString())
-            val bodyAsJson = cachedBody.toString()
-            log.info("{}", bodyAsJson)
             chain.filter(exchange)
         }
     }

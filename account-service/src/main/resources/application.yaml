@@ -1,0 +1,7 @@
+server:
+  port: 1010
+
+logging:
+  level:
+    com.ndgndg91: debug
+    web: debug

@@ -1,0 +1,7 @@
+server:
+  port: 2020
+
+logging:
+  level:
+    com.ndgndg91.bff.client.AccountClient: debug
+    web: debug

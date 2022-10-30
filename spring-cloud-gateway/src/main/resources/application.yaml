@@ -3,9 +3,13 @@ spring:
     gateway:
       routes:
         - id: my-test
-          uri: http://localhost:9090
+          uri: http://localhost:2020
           predicates:
             - Path=/**
           filters:
             - name: CachingBodyFilter
             - name: ReadBodyFilter
+
+logging:
+  level:
+    web: debug

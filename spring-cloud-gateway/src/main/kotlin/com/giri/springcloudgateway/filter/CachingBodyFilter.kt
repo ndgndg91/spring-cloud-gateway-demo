@@ -23,7 +23,7 @@ class CachingBodyFilter: GatewayFilterFactory<CachingBodyFilter.Config> {
 
     override fun apply(config: Config?): GatewayFilter {
         return GatewayFilter { exchange: ServerWebExchange, chain: GatewayFilterChain ->
-            return@GatewayFilter ServerWebExchangeUtils.cacheRequestBody(exchange) { serverHttpRequest: ServerHttpRequest ->
+            ServerWebExchangeUtils.cacheRequestBody(exchange) { serverHttpRequest: ServerHttpRequest ->
                 chain.filter(exchange.mutate().request(serverHttpRequest).build())
 
             }

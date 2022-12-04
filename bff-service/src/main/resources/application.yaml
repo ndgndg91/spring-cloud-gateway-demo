@@ -5,3 +5,9 @@ logging:
   level:
     com.ndgndg91.bff.client.AccountClient: debug
     web: debug
+
+time:
+  kst:
+    sale:
+      start: 2022-12-01 00:00:00 KST
+      end: 2022-12-31 23:59:00 KST

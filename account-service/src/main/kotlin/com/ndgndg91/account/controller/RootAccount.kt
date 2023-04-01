@@ -4,5 +4,6 @@ import java.math.BigInteger
 
 data class RootAccount(
     val id: BigInteger,
-    val email: String
+    val email: String,
+    val accessTokens: List<String>
 )

@@ -25,7 +25,6 @@ class CachingBodyFilter: GatewayFilterFactory<CachingBodyFilter.Config> {
         return GatewayFilter { exchange: ServerWebExchange, chain: GatewayFilterChain ->
             ServerWebExchangeUtils.cacheRequestBody(exchange) { serverHttpRequest: ServerHttpRequest ->
                 chain.filter(exchange.mutate().request(serverHttpRequest).build())
-
             }
         }
     }

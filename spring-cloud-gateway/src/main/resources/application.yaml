@@ -9,6 +9,10 @@ spring:
           filters:
             - name: CachingBodyFilter
             - name: ReadBodyFilter
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
 
 logging:
   level:

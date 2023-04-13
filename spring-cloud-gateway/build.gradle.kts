@@ -24,6 +24,7 @@ repositories {
 extra["springCloudVersion"] = "2021.0.4"
 
 dependencies {
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

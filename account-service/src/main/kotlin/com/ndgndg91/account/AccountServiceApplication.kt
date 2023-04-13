@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SecondDepthServiceApplication
+class AccountServiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<SecondDepthServiceApplication>(*args)
+    runApplication<AccountServiceApplication>(*args)
 }

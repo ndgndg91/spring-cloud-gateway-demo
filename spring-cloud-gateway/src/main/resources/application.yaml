@@ -9,6 +9,7 @@ spring:
           filters:
             - name: CachingBodyFilter
             - name: ReadBodyFilter
+            - name: AuthenticationFilter
   redis:
     host: localhost
     port: 6379

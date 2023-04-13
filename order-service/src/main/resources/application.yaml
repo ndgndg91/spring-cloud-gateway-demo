@@ -3,3 +3,6 @@ spring:
     url: r2dbc:pool:mysql://localhost:3306/order_service
     username: order_server_user
     password: 1234
+
+server:
+  port: 2020

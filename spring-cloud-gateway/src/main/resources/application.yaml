@@ -18,3 +18,4 @@ spring:
 logging:
   level:
     web: debug
+    reactor.netty.http.client: debug

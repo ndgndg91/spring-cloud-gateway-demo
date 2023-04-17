@@ -1,8 +1,7 @@
 package com.giri.springcloudgateway.filter
 
-import com.giri.springcloudgateway.exception.DuplicatedNonceException
-import com.giri.springcloudgateway.exception.NonceNotFoundException
-import com.giri.springcloudgateway.exception.UnauthorizedException
+import com.giri.springcloudgateway.exception.*
+import com.giri.springcloudgateway.helper.SignatureHelper
 import com.giri.springcloudgateway.repository.AccountRepository
 import com.giri.springcloudgateway.repository.NonceRepository
 import org.slf4j.LoggerFactory
@@ -32,15 +31,20 @@ class AuthenticationFilter(
 
     override fun apply(config: Config?): GatewayFilter {
         return GatewayFilter { exchange, chain ->
+            val signature = exchange.request.headers["signature"]?.firstOrNull() ?: throw SignatureNotFoundException()
+            val nonce = exchange.request.headers["nonce"]?.firstOrNull() ?: throw NonceNotFoundException()
             val auth = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.firstOrNull() ?: throw UnauthorizedException()
             val accessToken = try {
                 auth.split(" ")[1]
             } catch (e: IndexOutOfBoundsException) {
                 throw UnauthorizedException()
             }
-            val nonce = exchange.request.headers["nonce"]?.firstOrNull() ?: throw NonceNotFoundException()
             accountRepository.findAccountByAccessToken(accessToken).flatMap {
-                it.forEach { account -> log.info("{}", account) }
+                val account = it.firstOrNull()?: return@flatMap Mono.error(UnauthorizedException())
+                log.info("{}", account)
+                if (SignatureHelper.isInvalidSignature(signature, "${exchange.request.method}:${exchange.request.path}:$nonce", account.secretKey)) {
+                    return@flatMap Mono.error(SignatureInvalidException())
+                }
                 nonceRepository.isExists(accessToken, nonce).flatMap { exists ->
                     if (exists) {
                         Mono.error(DuplicatedNonceException())

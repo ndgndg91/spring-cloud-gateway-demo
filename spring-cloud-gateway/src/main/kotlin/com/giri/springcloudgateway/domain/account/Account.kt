@@ -7,5 +7,5 @@ import java.math.BigInteger
 data class Account(
     val id: BigInteger,
     val email: String,
-    val secret: String
+    val secretKey: String
 )

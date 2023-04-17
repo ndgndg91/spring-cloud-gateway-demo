@@ -1,4 +1,4 @@
-package com.ndgndg91.bff.client.protocol.response
+package com.ndgndg91.bff.client.dto.response
 
 import java.math.BigInteger
 

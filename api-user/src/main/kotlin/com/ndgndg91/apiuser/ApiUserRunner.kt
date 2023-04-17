@@ -24,7 +24,7 @@ class ApiUserRunner(
     override fun run(args: ApplicationArguments?) {
         val stop = System.currentTimeMillis() + TimeUnit.MILLISECONDS.toMillis(1000 * 60)
         while (stop > System.currentTimeMillis()) {
-            Thread.sleep(500)
+            Thread.sleep(3000)
             client.findAll(Random().nextLong().toBigInteger()).subscribe {
                 log.info("{}", it)
             }

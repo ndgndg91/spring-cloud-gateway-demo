@@ -1,6 +1,6 @@
 package com.ndgndg91.bff.controller
 
-import com.ndgndg91.bff.client.protocol.response.RootAccount
+import com.ndgndg91.bff.client.dto.response.RootAccount
 import com.ndgndg91.bff.repository.AccountRepository
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

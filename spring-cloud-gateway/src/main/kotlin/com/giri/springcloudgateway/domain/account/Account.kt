@@ -6,5 +6,6 @@ import java.math.BigInteger
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Account(
     val id: BigInteger,
-    val email: String
+    val email: String,
+    val secret: String
 )

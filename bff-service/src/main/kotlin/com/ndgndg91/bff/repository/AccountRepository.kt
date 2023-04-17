@@ -1,8 +1,7 @@
 package com.ndgndg91.bff.repository
 
 import com.ndgndg91.bff.client.AccountClient
-import com.ndgndg91.bff.client.protocol.response.RootAccount
-import feign.Client
+import com.ndgndg91.bff.client.dto.response.RootAccount
 import feign.Contract
 import feign.Feign
 import feign.Logger

@@ -1,4 +1,4 @@
-package com.giri.springcloudgateway.helper
+package com.giri.springcloudgateway.global.helper
 
 import org.slf4j.LoggerFactory
 import java.util.*

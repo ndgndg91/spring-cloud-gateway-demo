@@ -1,7 +1,7 @@
 package com.giri.springcloudgateway.repository
 
 import com.giri.springcloudgateway.domain.account.Account
-import com.giri.springcloudgateway.exception.account.AccountServerException
+import com.giri.springcloudgateway.global.exception.account.AccountServerException
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.springframework.core.ParameterizedTypeReference

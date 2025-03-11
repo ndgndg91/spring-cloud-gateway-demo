@@ -1,3 +1,3 @@
-package com.giri.springcloudgateway.exception
+package com.giri.springcloudgateway.global.exception
 
 class SignatureNotFoundException : RuntimeException()

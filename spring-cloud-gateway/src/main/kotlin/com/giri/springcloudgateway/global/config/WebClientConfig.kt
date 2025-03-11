@@ -1,4 +1,4 @@
-package com.giri.springcloudgateway.config
+package com.giri.springcloudgateway.global.config
 
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler

@@ -3,6 +3,7 @@ package com.giri.springcloudgateway.filter.dto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
+import com.giri.springcloudgateway.global.helper.JsonHelper.toJson
 import org.springframework.http.HttpHeaders
 import java.time.LocalDateTime
 
@@ -21,6 +22,27 @@ data class AccessLog(
     val response: String?,
     val errorMessage: List<ExceptionLog>? = null
 ) {
+    fun toMap(): Map<String, String> {
+        val map = mutableMapOf(
+            "timestamp" to timestamp,
+            "requestId" to requestId,
+            "ip" to ip,
+            "method" to method,
+            "url" to url,
+            "request.headers" to requestHeaders.toString(),
+            "body" to (body ?: ""),
+            "status_code" to statusCode,
+            "response.headers" to responseHeaders.toString(),
+            "response" to (response ?: ""),
+        )
+
+        if (errorMessage != null) {
+            map.put("error_message", errorMessage.toJson())
+        }
+
+        return map.toMap()
+    }
+
     companion object {
         fun ok(requestId: String,
                request: RequestLog,

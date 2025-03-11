@@ -1,10 +1,9 @@
 package com.giri.springcloudgateway.filter
 
-import com.giri.springcloudgateway.global.extension.ip
 import com.giri.springcloudgateway.filter.dto.AccessLog
 import com.giri.springcloudgateway.filter.dto.RequestLog
 import com.giri.springcloudgateway.filter.dto.ResponseLog
-import com.giri.springcloudgateway.global.helper.JsonHelper.toJson
+import com.giri.springcloudgateway.global.extension.ip
 import org.reactivestreams.Publisher
 import org.slf4j.LoggerFactory
 import org.springframework.core.Ordered
@@ -62,12 +61,12 @@ class LoggingFilter : WebFilter, Ordered {
     private fun logCombined(exchange: ServerWebExchange, requestId: String) {
         val requestData = exchange.attributes[REQUEST_LOG] as? RequestLog ?: RequestLog.EMPTY
         val responseData = exchange.attributes[RESPONSE_LOG] as? ResponseLog ?: ResponseLog.EMPTY
-        logger.info(
+        logger.info("{}",
             AccessLog.ok(
                 requestId = requestId,
                 request = requestData,
                 response = responseData,
-            ).toJson()
+            )
         )
     }
 

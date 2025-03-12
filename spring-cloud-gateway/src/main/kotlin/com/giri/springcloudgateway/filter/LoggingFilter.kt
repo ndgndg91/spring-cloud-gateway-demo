@@ -19,6 +19,10 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.core.scheduler.Schedulers
+import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
+import java.nio.channels.Channels
 import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.function.Supplier
@@ -92,18 +96,14 @@ class LoggingFilter : WebFilter, Ordered {
             )
             exchange.attributes[REQUEST_LOG] = defaultRequestLog
 
-            return request.body
-                .switchIfEmpty(Flux.just(DefaultDataBufferFactory().wrap(ByteArray(0)))) // 빈 본문 처리
-                .map { buffer ->
-                    val bodyString = buffer.toString(StandardCharsets.UTF_8)
-                    if (bodyString.isNotEmpty()) { // 본문이 있으면 업데이트
-                        exchange.attributes[REQUEST_LOG] = defaultRequestLog.copy(
-                            body = bodyString
-                        )
+            return request.body.switchIfEmpty(Flux.just(DefaultDataBufferFactory().wrap(ByteArray(0)))) // 빈 본문 처리
+                .publishOn(Schedulers.boundedElastic()).doOnNext { dataBuffer: DataBuffer ->
+                    val bodyStream = ByteArrayOutputStream()
+                    dataBuffer.readableByteBuffers().forEach { byteBuffer: ByteBuffer ->
+                        Channels.newChannel(bodyStream).write(byteBuffer.asReadOnlyBuffer())
                     }
-                    buffer // 원래 버퍼 반환
-                }.cache() // 캐싱
-                .doOnError { error ->
+                    exchange.attributes[REQUEST_LOG] = defaultRequestLog.copy(body = String(bodyStream.toByteArray()))
+                }.doOnError { error ->
                     logger.error("[$requestId] Error reading request body", error)
                     exchange.attributes[REQUEST_LOG] = defaultRequestLog.copy(
                         body = "Error occurred when reading request body"

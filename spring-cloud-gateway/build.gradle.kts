@@ -24,7 +24,14 @@ repositories {
 extra["springCloudVersion"] = "2024.0.0"
 
 dependencies {
-    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.119.Final:osx-aarch_64")
+    // Actuator 및 Prometheus 메트릭 의존성 추가
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
+    // Mac M1(Apple Silicon)에서만 의존성 추가
+    if (System.getProperty("os.name").toLowerCase().contains("mac") &&
+        System.getProperty("os.arch").toLowerCase().contains("aarch64")) {
+        runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.119.Final:osx-aarch_64")
+    }
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")

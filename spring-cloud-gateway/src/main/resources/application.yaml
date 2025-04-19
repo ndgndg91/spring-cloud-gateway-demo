@@ -21,3 +21,19 @@ logging:
   level:
     web: debug
     reactor.netty.http.client: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name:api-gateway}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
